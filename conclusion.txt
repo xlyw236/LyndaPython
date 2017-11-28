@@ -1,0 +1,141 @@
+CH2------------------------
+在if __name__ == 'main': 下的代码只有在第一种情况下（即文件作为脚本直接执行）才会被执行，而import到其他脚本中是不会被执行的。
+
+每个python模块（python文件，也就是此处的test.py和import_test.py）都包含内置的变量__name__,当运行模块被执行的时候，__name__等于文件名（包含了后缀.py）；
+如果import到其他模块中，则__name__等于模块名称（不包含后缀.py）。而“__main__”等于当前执行文件的名称（包含了后缀.py）。
+
+global f:在一个函数中定义一个全局变量f，覆盖之前的f的值 （此f非彼f）
+del f： 删除f的值
+
+print "string type " + str(123)
+数字要转成string才能和string一起输出
+
+print 对应 return 
+print func1() 则 func1()里面必须有return，否则出现none
+--------------------
+def power(num, x=1):
+  result = 1;
+  for i in range(x):
+    result = result * num  
+  return result
+def函数中的参数赋值没有意义，因为调用的时候会再赋值 ，除非调用的时候只赋值其中一个参数
+(num, x)顺序在调用时可以随意改变
+----------------------------------------
+def multi_add(*args):
+  result = 0;
+  for x in args:
+    result = result + x
+  return result
+#arguements中的星号表明可以加许多参数
+----------------------------------------
+for x in range(5,10):
+    #if (x == 7): break #不会出现7
+    #if (x % 2 == 0): continue #不会出现偶数
+    print x
+ -----------------------------
+
+days = ["Mon","Tue","Wed","Thu","Fri","Sat","Sun"]
+ for i, d in enumerate(days):
+   print i, d
+ #enumerate 每个day前面出现0123456
+------------------------------------------
+class class1():
+ def method1(self):
+  print "a"
+ def method2(self):
+  print "b"
+  
+class myclass(class1): #如果要调用其他class，必须先继承
+ def method3(self):  #class中的括号要有self
+  print "c"
+ def method4(self):
+  class1.method1(self)
+a=class1() #要建立对象才能调用方法
+a.method2()
+
+self只有在类的方法中才会有，独立的函数或方法是不必带有self的。self在定义类的方法时是必须有的，虽然在调用时不必传入相应的参数。
+self名称不是必须的，在python中self不是关键词，可以定义成a或b或其它名字都可以
+
+在其他模块里面调用class1()中的方法：
+from class1 import *
+a=class1()
+a.method1()
+-------------------------------------------------------
+CH3------------
+from datetime import *
+所有与日期时间有关的函数都在datetime模块里面
+today = date.today()
+
+t = date.today()
+print t
+print t.day, t.month, t.year,t.weekday
+可以把t的值代入，写成
+print date.today().day, date.today().month,date.today().year,date.today().weekday
+
+
+  #### Date Formatting ####
+  
+  # %y/%Y - Year, %a/%A - weekday, %b/%B - month, %d - day of month
+  print now.strftime("%Y") # full year with century
+  print now.strftime("%a, %d %B, %y") # abbreviated day, num, full month, abbreviated year
+  
+  # %c - locale's date and time, %x - locale's date, %X - locale's time
+  print now.strftime("%c")
+  print now.strftime("%x")
+  print now.strftime("%X")
+  
+  #### Time Formatting ####
+  
+  # %I/%H - 12/24 Hour, %M - minute, %S - second, %p - locale's AM/PM
+  print now.strftime("%I:%M:%S %p") # 12-Hour:Minute:Second:AM
+  print now.strftime("%H:%M") # 24-Hour:Minute
+-----------------
+CH4---------------
+读文件 
+def readfile():
+ b = open("test.txt", "r")
+ c=b.readlines()
+ for i in c:
+  print i
+readfile()
+
+写入文件：
+a = open("test.txt", "w+")
+
+def main(num):
+ for i in range(num):
+  a.write("hello world\n")
+
+main(3)
+------- Path utilities ---
+import os
+from os import path
+import datetime
+from datetime import date, time, timedelta
+import time
+----------------------
+def main():
+      # make a duplicate of an existing file
+    with ZipFile("testzip.zip","w") as newzip:
+      newzip.write("textfile.txt")
+      newzip.write("textfile.txt.bak")
+   #shutil.make_archive("archive", "zip", root_dir)
+   
+if __name__ == "__main__":
+  main()
+ 将文件添加到压缩包
+ ---------------------
+ CH5--------------------------
+import urllib2
+----------------------
+ def main():
+  # open a connection to a URL using urllib2
+  webUrl = urllib2.urlopen("http://joemarini.com")
+  
+  # get the result code and print it
+  print "result code: " + str(webUrl.getcode())
+  
+  # read the data from the URL and print it
+  data = webUrl.read()
+  print data
+读取web的data

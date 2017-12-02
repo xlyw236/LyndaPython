@@ -1,0 +1,170 @@
+************************************************************************************
+CHAPTER 2:
+************************************************************************************
+--- Variables ---------------------------------
+不同的变量不可相加：
+print "string type " + str(123)
+
+全局变量和本地变量：
+global会覆盖之前变量的值使该变量成为全局变量
+
+
+--- Functions ------------------------------------------------
+if __name__ == 'main':
+每个python模块都包含内置的变量__name__,当运行模块被执行的时候，__name__等于文件名（包含了后缀.py）
+如果import到其他模块中，则__name__等于模块名称（不包含后缀.py）。而“__main__”等于当前执行文件的名称（包含了后缀.py）。
+
+print 对应 return：
+print func1()   #func1()里面必须有return，否则出现none
+
+def函数中的参数赋值没有意义，可在调用时随意改变，顺序也可以换：
+def power(num, x=1)  #输入num的x次方
+  for i in range(x):
+    result = result * num  
+  return result
+ 
+ arguements中的星号表明可以加许多参数：
+ def multi_add(*args)
+ 
+ --- Conditionals ---------------------------------------------
+ 简化的if else语句：
+ st = "A" if (x < y) else "B"
+ print st
+
+ --- Loops ------------------------------------------------------
+ while: 先做后判，否出循环
+ 
+ For：括号中左闭右开
+  for i in range(2,5):
+  print i;  #输入234，没有5！
+ 
+--- Classes ---------------------------------------------------
+Self 关键字：
+class中所有method后的括号要加self，指的是对象本身。
+self只有在类的方法中才会有，独立的函数或方法是不必带有self的。
+self名称不是必须的，在python中self不是关键词，可以定义成a或b或其它名字都可以。
+
+类中的方法必须先实例化才能调用
+  c = myClass()
+  c.method1()  #调用myClass中的method1
+
+如果在一个类中调用其他类的方法，必须在这个类中继承：
+class myclass(class1):   #在myclass中调用class1的method1
+ def method4(self):
+  class1.method1(self)
+  
+  
+  
+  
+************************************************************************************
+CHAPTER 3:
+************************************************************************************
+--- Dates -----------------------------------------
+所有与日期时间有关的函数都在datetime模块里面：
+from datetime import *
+
+输入日期，月份，年，星期：
+print date.today().day, date.today().month, date.today().year,date.today().weekday
+
+--- Formatting ---
+%y/%Y - Year,    %a/%A - weekday,     %b/%B - month,     %d - day of month
+%c - locale's date and time,      %x - locale's date,    %X - locale's time
+%I/%H - 12/24 Hour,     %M - minute,     %S - second,    %p - locale's AM/PM
+ 
+--- Timedeltas -------------------------------------
+from datetime import timedelta
+计算多少天以后的日期：
+print  str(datetime.now() + timedelta(days=365)) #从今天算起365天后日期
+print str(datetime.now() + timedelta(weeks=2, days=3)) #从今天算起15天后日期
+
+--- Calendars ------------------------------------
+import calendar
+创建新日历：
+c = calendar.TextCalendar(calendar.SUNDAY)
+str = c.formatmonth(2013, 1, 0, 0)
+print str
+
+创建HTML日历：
+hc = calendar.HTMLCalendar(calendar.SUNDAY)
+str = hc.formatmonth(2013, 1)
+print str
+
+
+
+
+************************************************************************************
+CHAPTER 4:
+************************************************************************************
+--- Files -----------------------------------------
+ 打开文件：
+ f = open(文件名，权限符)
+ 权限符有： r,r+ （读） w,w+（写） a,a+（添）
+ 
+ 写入文件：
+ f.write("xxx")
+ 
+ --- Path utilities --------------------------------
+import os
+from os import path
+import datetime
+from datetime import date, time, timedelta
+import time
+
+文件的具体路径：
+path.realpath("textfile.txt")
+路径与名字分开：
+path.split(path.realpath("textfile.txt"))
+
+查看文件上次修改日期：
+time.ctime(path.getmtime("textfile.txt") #time.ctime():将日期变成可以看得懂的形式 > Sun Nov 19 17:59:13 2017
+print datetime.datetime.fromtimestamp(path.getmtime("textfile.txt")) #fromtimestamp 将日期写成正规格式 > 2017-11-19 17:59:13.204000
+
+--- shell -----------------------------------------
+import os
+import shutil
+from zipfile import ZipFile
+from os import path
+from shutil import make_archive
+
+复制文件到 文件名.bak：
+dst = src + ".bak"
+shutil.copy(src,dst) 
+复制文件权限：    
+shutil.copystat(src, dst)
+
+将指定文件添加到压缩包testzip.zip：
+def main():
+    with ZipFile("testzip.zip","w") as newzip:
+      newzip.write("textfile.txt")
+      newzip.write("textfile.txt.bak")
+   shutil.make_archive("archive", "zip", root_dir) 
+if __name__ == "__main__":
+  main()
+
+************************************************************************************
+CHAPTER 5:
+************************************************************************************
+--- Internet Data ------------------------------------------
+
+import urllib2
+
+获取网页的html代码：
+def main():
+  webUrl = urllib2.urlopen("http://joemarini.com")
+  print "result code: " + str(webUrl.getcode()) 
+  data = webUrl.read()
+  print data
+  
+--- XML ----------------------------------------------------
+import xml.dom.minidom
+
+用 parse()函数来打开xml文件： 
+ doc = xml.dom.minidom.parse("samplexml.xml")
+ 
+
+ 输出第一个子标签：
+  print doc.firstChild.tagName
+ 
+ 找出带skill的标签数
+skills = doc.getElementsByTagName("skill")
+ 
